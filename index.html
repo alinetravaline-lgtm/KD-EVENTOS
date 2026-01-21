@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KD EVENTOS | MVP com IA Integrada</title>
+    <title>KD EVENTOS | Conexões Reais</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f9ff; /* Cor mais clara da paleta */ }
         h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
         
         /* Utility */
@@ -28,8 +28,8 @@
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-thumb { background: #88cbff; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #93d0ff; }
 
         /* CHAT WIDGET STYLES (Fixed Z-Index) */
         .chat-widget { 
@@ -46,14 +46,15 @@
             height: 60px; 
             padding: 0 20px;
             border-radius: 30px; 
-            background: linear-gradient(135deg, #1E3A8A, #D97706);
-            color: white; 
+            /* Gradiente usando a paleta de azuis */
+            background: linear-gradient(135deg, #88cbff, #9fd5ff);
+            color: #1e293b; /* Texto escuro para contraste */
             display: flex; 
             align-items: center; 
             justify-content: center;
             gap: 8px;
-            font-weight: 600;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(136, 203, 255, 0.5); 
             cursor: pointer; 
             transition: all 0.2s ease;
             border: 2px solid white;
@@ -65,32 +66,34 @@
             height: 450px;
             background: white; 
             border-radius: 16px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             display: none; /* Hidden by default */
             flex-direction: column; 
             overflow: hidden; 
             margin-bottom: 15px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #cfeaff;
             animation: slideUp 0.3s ease;
         }
         .chat-window.open { display: flex; }
         
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; background: #f8fafc; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; background: #f3f9ff; }
         .message { margin-bottom: 12px; max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4; }
-        .message.user { background: #1E3A8A; color: white; align-self: flex-end; margin-left: auto; border-bottom-right-radius: 2px; }
-        .message.ai { background: white; color: #334155; align-self: flex-start; border: 1px solid #e2e8f0; border-bottom-left-radius: 2px; }
+        
+        /* User message now darker blue from text */
+        .message.user { background: #88cbff; color: #0f172a; align-self: flex-end; margin-left: auto; border-bottom-right-radius: 2px; font-weight: 500; }
+        .message.ai { background: white; color: #334155; align-self: flex-start; border: 1px solid #e7f4ff; border-bottom-left-radius: 2px; }
         
         /* Markdown styles in chat */
         .message.ai p { margin-bottom: 8px; }
         .message.ai ul { list-style-type: disc; margin-left: 20px; margin-bottom: 8px; }
-        .message.ai strong { color: #D97706; }
+        .message.ai strong { color: #0369a1; }
 
         /* AI Button in Modal */
         .ai-magic-btn {
-            background: linear-gradient(90deg, #4F46E5, #9333EA);
-            color: white;
+            background: linear-gradient(90deg, #88cbff, #93d0ff);
+            color: #0f172a;
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -99,7 +102,7 @@
             align-items: center;
             gap: 6px;
             transition: opacity 0.2s;
-            box-shadow: 0 2px 10px rgba(147, 51, 234, 0.3);
+            box-shadow: 0 2px 10px rgba(136, 203, 255, 0.4);
         }
         .ai-magic-btn:hover { opacity: 0.9; }
     </style>
@@ -111,9 +114,11 @@
                 extend: {
                     colors: {
                         brand: {
-                            gold: '#D97706',
-                            navy: '#1E3A8A',
-                            light: '#FEF3C7',
+                            primary: '#88cbff',   // Cor Primária (Azul Céu)
+                            secondary: '#dafff1', // Cor Secundária (Menta)
+                            surface: '#f3f9ff',   // Fundo (Azul muito claro)
+                            text: '#0f172a',      // Texto Escuro (Slate 900) para contraste
+                            accent: '#0284c7'     // Azul mais forte para textos/links
                         }
                     }
                 }
@@ -121,21 +126,21 @@
         }
     </script>
 </head>
-<body class="flex flex-col min-h-screen relative">
+<body class="flex flex-col min-h-screen relative text-slate-800">
 
     <!-- Navigation -->
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
+    <nav class="bg-white border-b border-brand-primary/20 sticky top-0 z-40 px-4 py-3 shadow-sm">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <div class="flex items-center cursor-pointer group" onclick="app.router('home')">
-                <div class="bg-brand-gold/10 p-2 rounded-lg mr-2 group-hover:bg-brand-gold/20 transition">
-                    <i class="ph ph-confetti text-brand-gold text-2xl"></i>
+                <div class="bg-brand-secondary p-2 rounded-lg mr-2 group-hover:bg-brand-primary group-hover:scale-105 transition duration-300">
+                    <i class="ph ph-confetti text-brand-text text-2xl"></i>
                 </div>
-                <span class="text-xl font-bold text-brand-navy tracking-tight font-serif">KD EVENTOS</span>
+                <span class="text-xl font-bold text-brand-text tracking-tight font-serif">KD EVENTOS</span>
             </div>
             
             <div class="hidden md:flex items-center space-x-6">
-                <button onclick="app.router('home')" class="text-sm font-medium text-gray-600 hover:text-brand-gold transition">Buscar</button>
-                <button onclick="app.router('search')" class="text-sm font-medium text-gray-600 hover:text-brand-gold transition">Explorar</button>
+                <button onclick="app.router('home')" class="text-sm font-medium text-gray-600 hover:text-brand-accent transition">Buscar</button>
+                <button onclick="app.router('search')" class="text-sm font-medium text-gray-600 hover:text-brand-accent transition">Explorar</button>
             </div>
 
             <div class="flex items-center space-x-3" id="auth-buttons">
@@ -150,30 +155,30 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-brand-navy text-white py-12 mt-auto border-t border-white/10">
+    <footer class="bg-brand-primary text-brand-text py-12 mt-auto border-t border-brand-primary">
         <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
                 <div class="flex items-center mb-4">
-                    <i class="ph ph-confetti text-brand-gold text-2xl mr-2"></i>
+                    <i class="ph ph-confetti text-white text-2xl mr-2 drop-shadow-sm"></i>
                     <span class="text-xl font-bold font-serif">KD EVENTOS</span>
                 </div>
-                <p class="text-gray-400 text-sm">Conectando sonhos aos melhores realizadores.</p>
+                <p class="text-slate-800 font-medium text-sm">Conectando sonhos aos melhores realizadores.</p>
             </div>
         </div>
     </footer>
 
-    <!-- CHAT WIDGET (AI ASSISTANT) - Explicitly placed at end of body -->
+    <!-- CHAT WIDGET (AI ASSISTANT) -->
     <div class="chat-widget">
         <div class="chat-window" id="chat-window">
-            <div class="bg-brand-navy text-white p-4 flex justify-between items-center border-b border-white/10">
+            <div class="bg-brand-primary text-brand-text p-4 flex justify-between items-center border-b border-brand-primary/20">
                 <div class="flex items-center gap-2">
-                    <i class="ph ph-sparkle text-brand-gold text-xl"></i>
+                    <i class="ph ph-sparkle text-white text-xl drop-shadow-sm"></i>
                     <div>
                         <div class="font-bold font-serif leading-none">Assistente KD</div>
-                        <div class="text-[10px] text-gray-300 uppercase tracking-wider">Powered by Gemini AI</div>
+                        <div class="text-[10px] text-slate-700 uppercase tracking-wider font-semibold">Powered by Gemini AI</div>
                     </div>
                 </div>
-                <button onclick="app.toggleChat()" class="text-white/70 hover:text-white"><i class="ph ph-x"></i></button>
+                <button onclick="app.toggleChat()" class="text-slate-700 hover:text-white transition"><i class="ph ph-x"></i></button>
             </div>
             <div class="chat-messages" id="chat-messages">
                 <div class="message ai">
@@ -181,8 +186,8 @@
                 </div>
             </div>
             <form onsubmit="app.handleChatSubmit(event)" class="p-3 bg-white border-t border-gray-100 flex gap-2">
-                <input type="text" id="chat-input" placeholder="Digite sua dúvida..." class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-gold transition">
-                <button type="submit" class="bg-brand-navy text-white rounded-lg w-10 h-10 flex items-center justify-center hover:bg-blue-900 transition"><i class="ph ph-paper-plane-right"></i></button>
+                <input type="text" id="chat-input" placeholder="Digite sua dúvida..." class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-primary transition">
+                <button type="submit" class="bg-brand-primary text-slate-800 rounded-lg w-10 h-10 flex items-center justify-center hover:bg-brand-secondary transition shadow-sm"><i class="ph ph-paper-plane-right font-bold"></i></button>
             </form>
         </div>
         
@@ -197,27 +202,60 @@
 
     <!-- Templates -->
     <template id="view-home">
-        <div class="bg-brand-navy text-white py-16 px-4 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <!-- Alterado para gradiente suave entre a cor primária e tons da paleta -->
+        <div class="bg-gradient-to-br from-brand-primary via-[#93d0ff] to-brand-secondary py-20 px-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
             <div class="max-w-4xl mx-auto text-center relative z-10 fade-in">
-                <span class="inline-block py-1 px-3 rounded-full bg-brand-gold/20 text-brand-gold text-xs font-bold mb-4 border border-brand-gold/30">PLATAFORMA Nº1 DE CONEXÃO</span>
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Eventos não começam no dia. <br/><span class="text-brand-gold">Começam na conexão certa.</span></h1>
+                <span class="inline-block py-1 px-3 rounded-full bg-white/60 text-slate-800 text-xs font-bold mb-4 border border-white/50 backdrop-blur-sm shadow-sm">PLATAFORMA Nº1 DE CONEXÃO</span>
                 
-                <div class="bg-white p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 max-w-3xl mx-auto">
-                    <select id="home-city" class="flex-1 p-3 bg-transparent text-gray-800 outline-none border-b md:border-b-0 md:border-r border-gray-100">
+                <!-- Cor do texto ajustada para Slate-900 e Brand-Accent para melhor contraste no gradiente -->
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-slate-900">
+                    Eventos não começam no dia. <br/>
+                    <span class="text-brand-accent drop-shadow-sm">Começam na conexão certa.</span>
+                </h1>
+                
+                <!-- Barra de busca com efeito glassmorphism -->
+                <div class="bg-white/90 backdrop-blur-md p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 max-w-3xl mx-auto border border-white/50">
+                    <select id="home-city" class="flex-1 p-3 bg-transparent text-gray-800 outline-none border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer hover:bg-gray-50/50 transition">
                         <option value="">Onde será o evento?</option>
                     </select>
-                    <select id="home-category" class="flex-1 p-3 bg-transparent text-gray-800 outline-none">
+                    <select id="home-category" class="flex-1 p-3 bg-transparent text-gray-800 outline-none cursor-pointer hover:bg-gray-50/50 transition">
                         <option value="">O que você precisa?</option>
                     </select>
-                    <button onclick="app.handleHomeSearch()" class="bg-brand-gold hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-lg transition">Buscar</button>
+                    <button onclick="app.handleHomeSearch()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg transform hover:-translate-y-0.5">Buscar</button>
                 </div>
             </div>
         </div>
         <div class="max-w-6xl mx-auto px-4 py-16">
-            <h2 class="text-2xl font-bold font-serif mb-8 text-center text-brand-navy">Categorias Populares</h2>
+            
+            <!-- NOVOS BOTÕES DE AÇÃO -->
+            <div class="flex flex-col md:flex-row justify-center gap-6 mb-16 -mt-24 relative z-20">
+                <!-- Botão para Profissionais/Parceiros -->
+                <button onclick="app.openAuthModal()" class="flex items-center justify-center gap-4 bg-white border border-gray-100 text-slate-800 px-8 py-5 rounded-2xl shadow-xl hover:shadow-2xl hover:border-brand-primary transition transform hover:-translate-y-1 group min-w-[280px]">
+                    <div class="bg-brand-surface p-3 rounded-xl group-hover:bg-brand-primary transition duration-300">
+                        <i class="ph ph-briefcase text-3xl text-brand-text"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Para Profissionais</div>
+                        <div class="font-bold text-xl text-slate-900">Novos Parceiros</div>
+                    </div>
+                </button>
+
+                <!-- Botão para Clientes Finais -->
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => document.getElementById('home-category').focus(), 500);" class="flex items-center justify-center gap-4 bg-slate-900 text-white px-8 py-5 rounded-2xl shadow-xl hover:shadow-2xl hover:bg-slate-800 transition transform hover:-translate-y-1 group min-w-[280px]">
+                    <div class="bg-white/10 p-3 rounded-xl group-hover:bg-white/20 transition duration-300">
+                        <i class="ph ph-confetti text-3xl text-brand-secondary"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Para Clientes</div>
+                        <div class="font-bold text-xl">Planejar Evento</div>
+                    </div>
+                </button>
+            </div>
+
+            <h2 class="text-2xl font-bold font-serif mb-8 text-center text-slate-800">Categorias Populares</h2>
             <div id="home-categories-grid" class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-20"></div>
-            <h2 class="text-2xl font-bold font-serif text-brand-navy mb-6">Destaques da Semana</h2>
+            <h2 class="text-2xl font-bold font-serif text-slate-800 mb-6">Destaques da Semana</h2>
             <div id="home-featured-grid" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
         </div>
     </template>
@@ -225,24 +263,24 @@
     <template id="view-search">
         <div class="max-w-6xl mx-auto px-4 py-8 fade-in">
             <div class="flex items-center space-x-2 mb-8 text-sm text-gray-500">
-                <span onclick="app.router('home')" class="cursor-pointer hover:text-brand-navy">Home</span>
+                <span onclick="app.router('home')" class="cursor-pointer hover:text-brand-accent">Home</span>
                 <i class="ph ph-caret-right"></i>
-                <span class="font-semibold text-brand-navy">Resultados</span>
+                <span class="font-semibold text-slate-800">Resultados</span>
             </div>
             <div class="flex flex-col md:flex-row gap-8">
                 <div class="w-full md:w-64 shrink-0">
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 sticky top-24">
-                        <h3 class="font-bold mb-4">Filtrar</h3>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 sticky top-24 shadow-sm">
+                        <h3 class="font-bold mb-4 text-slate-800">Filtrar</h3>
                         <div class="mb-4">
                             <label class="text-xs font-bold text-gray-400 uppercase mb-2 block">Cidade</label>
-                            <select id="search-city" onchange="app.filterSearch()" class="w-full p-2 border rounded bg-gray-50 text-sm mb-4"></select>
+                            <select id="search-city" onchange="app.filterSearch()" class="w-full p-2 border rounded bg-brand-surface text-sm mb-4 outline-none focus:border-brand-primary"></select>
                             <label class="text-xs font-bold text-gray-400 uppercase mb-2 block">Categoria</label>
-                            <select id="search-category" onchange="app.filterSearch()" class="w-full p-2 border rounded bg-gray-50 text-sm"></select>
+                            <select id="search-category" onchange="app.filterSearch()" class="w-full p-2 border rounded bg-brand-surface text-sm outline-none focus:border-brand-primary"></select>
                         </div>
                     </div>
                 </div>
                 <div class="flex-1">
-                    <h2 class="text-2xl font-serif font-bold mb-2"><span id="result-count">0</span> Resultados encontrados</h2>
+                    <h2 class="text-2xl font-serif font-bold mb-2 text-slate-800"><span id="result-count" class="text-brand-accent">0</span> Resultados encontrados</h2>
                     <div id="search-results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"></div>
                 </div>
             </div>
@@ -252,23 +290,23 @@
     <template id="view-profile">
         <div class="fade-in pb-12">
             <div class="max-w-6xl mx-auto px-4 py-4">
-                <button onclick="app.router('search')" class="flex items-center text-gray-500 hover:text-brand-navy">
+                <button onclick="app.router('search')" class="flex items-center text-gray-500 hover:text-brand-accent transition">
                     <i class="ph ph-arrow-left mr-2"></i> Voltar para busca
                 </button>
             </div>
             <div class="h-64 md:h-80 w-full relative">
                 <img id="profile-img" src="" class="w-full h-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 text-white max-w-6xl mx-auto">
                     <div class="flex items-center gap-2 mb-2">
-                        <span id="profile-cat" class="bg-brand-gold px-2 py-0.5 rounded text-xs font-bold uppercase"></span>
-                        <span id="profile-verified" class="bg-blue-500 px-2 py-0.5 rounded text-xs font-bold flex items-center hidden"><i class="ph ph-seal-check mr-1"></i> Verificado</span>
+                        <span id="profile-cat" class="bg-brand-primary text-slate-900 px-2 py-0.5 rounded text-xs font-bold uppercase shadow-sm"></span>
+                        <span id="profile-verified" class="bg-white text-brand-accent px-2 py-0.5 rounded text-xs font-bold flex items-center hidden"><i class="ph ph-seal-check mr-1"></i> Verificado</span>
                     </div>
-                    <h1 id="profile-name" class="text-3xl md:text-5xl font-bold font-serif mb-2"></h1>
+                    <h1 id="profile-name" class="text-3xl md:text-5xl font-bold font-serif mb-2 text-white"></h1>
                     <div class="flex items-center text-gray-200">
                         <i class="ph ph-map-pin mr-1"></i> <span id="profile-city"></span>
                         <span class="mx-2">•</span>
-                        <i class="ph ph-star-fill text-yellow-400 mr-1"></i> <span id="profile-rating"></span>
+                        <i class="ph ph-star-fill text-brand-primary mr-1"></i> <span id="profile-rating"></span>
                     </div>
                 </div>
             </div>
@@ -287,9 +325,9 @@
                     <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-lg sticky top-24">
                         <div class="text-center mb-6">
                             <p class="text-gray-500 text-sm">Preço estimado</p>
-                            <div id="profile-price" class="text-2xl font-bold text-gray-800"></div>
+                            <div id="profile-price" class="text-2xl font-bold text-slate-800"></div>
                         </div>
-                        <button onclick="app.openQuoteModal()" class="w-full bg-brand-gold hover:bg-yellow-600 text-white font-bold py-3 rounded-lg mb-3 shadow-lg shadow-brand-gold/20 transition transform active:scale-95">Solicitar Orçamento</button>
+                        <button onclick="app.openQuoteModal()" class="w-full bg-brand-primary hover:bg-sky-400 text-slate-900 font-bold py-3 rounded-lg mb-3 shadow-lg shadow-brand-primary/30 transition transform active:scale-95">Solicitar Orçamento</button>
                     </div>
                 </div>
             </div>
@@ -298,7 +336,7 @@
 
     <template id="view-dashboard">
         <div class="max-w-6xl mx-auto px-4 py-8 fade-in">
-            <h1 class="text-3xl font-bold text-gray-900 mb-6">Dashboard do Fornecedor</h1>
+            <h1 class="text-3xl font-bold text-slate-800 mb-6">Dashboard do Fornecedor</h1>
             <div id="dash-leads-list" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"></div>
         </div>
     </template>
@@ -310,8 +348,9 @@
         const CATEGORIES = ["Espaços", "Fotografia", "Buffet", "Música & DJ", "Decoração", "Assessoria"];
         
         const INITIAL_SUPPLIERS = [
-            { id: 1, name: "Villa Toscana Eventos", category: "Espaços", city: "São Paulo", rating: 4.9, reviews: 128, verified: true, premium: true, price: "Alto", description: "Um pedaço da Itália em SP.", image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800", features: ["Ar Livre", "Gerador"] },
-            { id: 2, name: "Luz & Arte Fotografia", category: "Fotografia", city: "Rio de Janeiro", rating: 4.8, reviews: 84, verified: true, premium: false, price: "Médio", description: "Fotos emocionantes.", image: "https://images.unsplash.com/photo-1537905569824-f89f14cceb68?auto=format&fit=crop&q=80&w=800", features: ["Drone", "Álbum Digital"] }
+            { id: 1, name: "Villa Toscana Eventos", category: "Espaços", city: "São Paulo", rating: 4.9, reviews: 128, verified: true, premium: true, price: "Alto", description: "Um pedaço da Itália em SP. Perfeito para casamentos e eventos corporativos de alto nível.", image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800", features: ["Ar Livre", "Gerador Próprio", "Estacionamento"] },
+            { id: 2, name: "Luz & Arte Fotografia", category: "Fotografia", city: "Rio de Janeiro", rating: 4.8, reviews: 84, verified: true, premium: false, price: "Médio", description: "Capturando a essência de cada momento com um olhar artístico e sensível.", image: "https://images.unsplash.com/photo-1537905569824-f89f14cceb68?auto=format&fit=crop&q=80&w=800", features: ["Drone 4K", "Álbum Digital", "Same Day Edit"] },
+            { id: 3, name: "Sabor & Requinte", category: "Buffet", city: "Curitiba", rating: 4.7, reviews: 56, verified: false, premium: false, price: "Médio", description: "Gastronomia contemporânea que encanta pelo paladar e pela apresentação.", image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800", features: ["Menu Vegano", "Degustação"] }
         ];
 
         // --- GEMINI API HELPER ---
@@ -408,7 +447,7 @@
                 msgs.innerHTML += `<div id="${loadingId}" class="message ai">...</div>`;
                 msgs.scrollTop = msgs.scrollHeight;
 
-                const systemPrompt = "Você é o Assistente Virtual da plataforma KD Eventos. Ajude com planejamento, ideias e dúvidas. Seja amigável e conciso.";
+                const systemPrompt = "Você é o Assistente Virtual da plataforma KD Eventos. Ajude com planejamento, ideias e dúvidas. Seja amigável, conciso e use emojis.";
                 const response = await callGemini(text, systemPrompt);
 
                 document.getElementById(loadingId).remove();
@@ -423,20 +462,20 @@
             // --- QUOTE LOGIC WITH AI ---
             openQuoteModal: () => {
                 const modal = document.createElement('div');
-                modal.className = "fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm";
+                modal.className = "fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm";
                 modal.innerHTML = `
                     <div class="bg-white rounded-2xl w-full max-w-md p-6 relative fade-in shadow-2xl">
                         <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="ph ph-x text-xl"></i></button>
-                        <h3 class="text-2xl font-bold font-serif text-brand-navy mb-2">Pedir Orçamento</h3>
+                        <h3 class="text-2xl font-bold font-serif text-slate-800 mb-2">Pedir Orçamento</h3>
                         <p class="text-sm text-gray-500 mb-6">Grátis e sem compromisso.</p>
                         <form onsubmit="app.submitQuote(event)">
                             <div class="mb-3">
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Seu Nome</label>
-                                <input id="quote-name" required name="name" class="w-full p-3 border border-gray-200 rounded-lg" placeholder="Ex: Maria Silva">
+                                <input id="quote-name" required name="name" class="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-brand-primary" placeholder="Ex: Maria Silva">
                             </div>
                             <div class="mb-3">
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Data do Evento</label>
-                                <input id="quote-date" required name="date" type="date" class="w-full p-3 border border-gray-200 rounded-lg">
+                                <input id="quote-date" required name="date" type="date" class="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-brand-primary">
                             </div>
                             <div class="mb-3 relative">
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1 flex justify-between items-center">
@@ -445,9 +484,9 @@
                                         <i class="ph ph-sparkle"></i> Escrever com IA
                                     </button>
                                 </label>
-                                <textarea id="quote-msg" required name="msg" class="w-full p-3 border border-gray-200 rounded-lg h-32 text-sm" placeholder="Descreva seu evento..."></textarea>
+                                <textarea id="quote-msg" required name="msg" class="w-full p-3 border border-gray-200 rounded-lg h-32 text-sm outline-none focus:border-brand-primary" placeholder="Descreva seu evento..."></textarea>
                             </div>
-                            <button type="submit" class="w-full bg-brand-navy text-white font-bold py-3 rounded-lg hover:bg-blue-900 transition">Enviar Pedido</button>
+                            <button type="submit" class="w-full bg-brand-primary text-slate-900 font-bold py-3 rounded-lg hover:bg-brand-secondary transition">Enviar Pedido</button>
                         </form>
                     </div>
                 `;
@@ -471,9 +510,9 @@
 
                 const prompt = `Escreva uma mensagem curta e cordial para solicitar orçamento. 
                 Cliente: ${name}. Fornecedor: ${supplier.name} (${supplier.category}). 
-                Data: ${date}. Contexto: Gostei do perfil no site.`;
+                Data: ${date}. Contexto: Gostei do perfil no site e quero saber disponibilidade e valores.`;
 
-                const response = await callGemini(prompt, "Você é um assistente pessoal. Gere apenas o texto da mensagem.");
+                const response = await callGemini(prompt, "Você é um assistente pessoal. Gere apenas o texto da mensagem, sem aspas.");
 
                 document.getElementById('quote-msg').value = response.trim();
                 btn.innerHTML = originalText;
@@ -492,7 +531,7 @@
                 };
                 app.data.leads.push(lead);
                 e.target.closest('.fixed').remove();
-                alert('Orçamento enviado com sucesso!');
+                alert('Orçamento enviado com sucesso! O fornecedor responderá em breve.');
             },
 
             // --- STANDARD VIEW LOGIC (Home, Search, etc.) ---
@@ -501,10 +540,10 @@
                 const catGrid = document.getElementById('home-categories-grid');
                 CATEGORIES.forEach((cat, i) => {
                     const div = document.createElement('div');
-                    div.className = "bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition group";
+                    div.className = "bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition group hover:-translate-y-1";
                     div.innerHTML = `
-                        <div class="bg-brand-light w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3 group-hover:bg-brand-gold group-hover:text-white transition">
-                            <i class="ph ${i % 2 === 0 ? 'ph-camera' : 'ph-music-notes'} text-xl"></i>
+                        <div class="bg-brand-secondary w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3 group-hover:bg-brand-primary transition">
+                            <i class="ph ${i % 2 === 0 ? 'ph-camera' : 'ph-music-notes'} text-xl text-slate-700 group-hover:text-slate-900"></i>
                         </div>
                         <div class="font-semibold text-gray-700 text-sm">${cat}</div>
                     `;
@@ -547,7 +586,7 @@
                 });
                 countSpan.textContent = filtered.length;
                 if(filtered.length === 0) {
-                    grid.innerHTML = '<div class="col-span-3 text-center py-10 text-gray-400">Nenhum resultado encontrado.</div>';
+                    grid.innerHTML = '<div class="col-span-3 text-center py-10 text-gray-400">Nenhum resultado encontrado com estes filtros.</div>';
                 } else {
                     filtered.forEach(s => grid.appendChild(app.createSupplierCard(s)));
                 }
@@ -560,12 +599,12 @@
                 document.getElementById('profile-name').innerText = s.name;
                 document.getElementById('profile-city').innerText = s.city;
                 document.getElementById('profile-cat').innerText = s.category;
-                document.getElementById('profile-rating').innerText = `${s.rating} (${s.reviews})`;
+                document.getElementById('profile-rating').innerText = `${s.rating} (${s.reviews} avaliações)`;
                 document.getElementById('profile-desc').innerText = s.description;
                 document.getElementById('profile-price').innerText = s.price === "Alto" ? "$$$" : s.price === "Médio" ? "$$" : "$";
                 if(s.verified) document.getElementById('profile-verified').classList.remove('hidden');
                 const featuresDiv = document.getElementById('profile-features');
-                s.features.forEach(f => featuresDiv.innerHTML += `<div class="flex items-center text-gray-700"><i class="ph ph-check text-brand-gold mr-2 text-xl"></i> ${f}</div>`);
+                s.features.forEach(f => featuresDiv.innerHTML += `<div class="flex items-center text-gray-700"><i class="ph ph-check text-brand-primary mr-2 text-xl font-bold"></i> ${f}</div>`);
             },
 
             initDashboard: () => {
@@ -574,12 +613,19 @@
                 const list = document.getElementById('dash-leads-list');
                 
                 if(myLeads.length === 0) {
-                    list.innerHTML = `<div class="text-center text-gray-400 py-4">Nenhum orçamento recebido ainda.</div>`;
+                    list.innerHTML = `<div class="text-center text-gray-400 py-10">Você ainda não recebeu nenhum orçamento.<br>Melhore seu perfil para atrair mais clientes!</div>`;
                 } else {
                     list.innerHTML = `<div class="space-y-4">${myLeads.map(l => `
-                        <div class="border-b pb-4 last:border-0">
-                            <div class="font-bold text-brand-navy">${l.name} <span class="text-xs font-normal text-gray-500">(${l.date})</span></div>
-                            <div class="text-gray-600 text-sm mt-1 bg-gray-50 p-3 rounded">${l.message}</div>
+                        <div class="border-b border-gray-100 pb-4 last:border-0 hover:bg-gray-50 p-4 rounded transition">
+                            <div class="flex justify-between items-start">
+                                <div class="font-bold text-slate-800 text-lg">${l.name}</div>
+                                <span class="bg-brand-secondary text-brand-text px-2 py-1 rounded text-xs font-bold">${l.date}</span>
+                            </div>
+                            <div class="text-gray-600 text-sm mt-2 bg-white border border-gray-100 p-3 rounded shadow-sm">"${l.message}"</div>
+                            <div class="mt-3 flex gap-2">
+                                <button class="text-xs bg-brand-primary text-slate-900 px-3 py-1 rounded hover:opacity-80">Responder</button>
+                                <button class="text-xs border border-gray-300 text-gray-600 px-3 py-1 rounded hover:bg-gray-100">Arquivar</button>
+                            </div>
                         </div>
                     `).join('')}</div>`;
                 }
@@ -588,12 +634,13 @@
             // --- AUTH & HELPERS ---
             openAuthModal: () => {
                 const modal = document.createElement('div');
-                modal.className = "fixed inset-0 bg-brand-navy/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm";
+                modal.className = "fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm";
                 modal.innerHTML = `
                     <div class="bg-white rounded-2xl w-full max-w-md p-8 relative shadow-2xl fade-in">
-                        <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 text-gray-400"><i class="ph ph-x text-xl"></i></button>
-                        <h3 class="text-2xl font-bold font-serif text-brand-navy text-center mb-6">Login Fornecedor</h3>
-                        <button onclick="app.loginDemo()" class="w-full bg-brand-gold hover:bg-yellow-600 text-white font-bold py-3 rounded-lg mb-4">Entrar como Demo</button>
+                        <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="ph ph-x text-xl"></i></button>
+                        <h3 class="text-2xl font-bold font-serif text-slate-800 text-center mb-6">Área do Fornecedor</h3>
+                        <p class="text-center text-gray-500 mb-6 text-sm">Gerencie seu perfil e responda orçamentos.</p>
+                        <button onclick="app.loginDemo()" class="w-full bg-brand-primary hover:bg-brand-secondary text-slate-900 font-bold py-3 rounded-lg mb-4 transition shadow-md">Entrar como Demo</button>
                     </div>
                 `;
                 document.body.appendChild(modal);
@@ -612,14 +659,16 @@
             updateAuthUI: () => {
                 const container = document.getElementById('auth-buttons');
                 if(app.data.currentUser) {
-                    container.innerHTML = `<button onclick="app.router('dashboard')" class="text-sm font-medium text-brand-navy">Dashboard</button> <button onclick="app.logout()" class="text-sm text-red-500">Sair</button>`;
+                    container.innerHTML = `<button onclick="app.router('dashboard')" class="text-sm font-bold text-slate-700 hover:text-brand-accent">Dashboard</button> <button onclick="app.logout()" class="text-sm text-red-500 font-medium hover:text-red-700">Sair</button>`;
                 } else {
-                    container.innerHTML = `<button onclick="app.openAuthModal()" class="bg-brand-navy text-white px-4 py-2 rounded-lg text-sm font-semibold">Sou Fornecedor</button>`;
+                    container.innerHTML = `<button onclick="app.openAuthModal()" class="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 transition shadow-md">Sou Fornecedor</button>`;
                 }
             },
             fillSelects: (cityId, catId) => {
                 const citySel = document.getElementById(cityId);
                 const catSel = document.getElementById(catId);
+                if(!citySel || !catSel) return;
+                
                 while (citySel.options.length > 1) citySel.remove(1);
                 while (catSel.options.length > 1) catSel.remove(1);
                 CITIES.forEach(c => citySel.add(new Option(c, c)));
@@ -627,17 +676,18 @@
             },
             createSupplierCard: (s) => {
                 const el = document.createElement('div');
-                el.className = "bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition cursor-pointer";
+                el.className = "bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition cursor-pointer group";
                 el.onclick = () => { app.data.selectedSupplierId = s.id; app.router('profile'); };
                 el.innerHTML = `
                     <div class="relative h-48 overflow-hidden">
-                        <img src="${s.image}" class="w-full h-full object-cover" />
-                        <div class="absolute bottom-3 right-3 bg-white/90 text-xs font-bold px-2 py-1 rounded">⭐ ${s.rating}</div>
+                        <img src="${s.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                        <div class="absolute bottom-3 right-3 bg-white/95 text-xs font-bold px-2 py-1 rounded shadow-sm text-slate-800">⭐ ${s.rating}</div>
+                        ${s.premium ? '<div class="absolute top-3 left-3 bg-brand-primary text-slate-900 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Destaque</div>' : ''}
                     </div>
                     <div class="p-4">
-                        <div class="text-xs font-bold text-brand-gold uppercase">${s.category}</div>
-                        <h3 class="font-bold text-gray-800">${s.name}</h3>
-                        <div class="text-gray-500 text-sm">${s.city}</div>
+                        <div class="text-xs font-bold text-brand-accent uppercase mb-1">${s.category}</div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight mb-1">${s.name}</h3>
+                        <div class="text-gray-500 text-sm flex items-center"><i class="ph ph-map-pin mr-1"></i> ${s.city}</div>
                     </div>
                 `;
                 return el;
